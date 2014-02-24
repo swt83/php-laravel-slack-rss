@@ -1,7 +1,7 @@
 {
-    "name": "travis/slack-twitter",
-    "description": "A Laravel PHP package for building a Slack integration for Twitter.",
-    "homepage": "https://github.com/swt83/php-laravel-slack-twitter",
+    "name": "travis/slack-rss",
+    "description": "A Laravel PHP package for building a Slack integration for RSS feeds.",
+    "homepage": "https://github.com/swt83/php-laravel-slack-rss",
     "license": "MIT",
     "authors": [
         {
