@@ -60,39 +60,62 @@ class RSS {
 
         // set title
         $feed->title = 'rss ['.strtolower($name).']';
-        $feed->description = '';
+        $feed->description = $feed->title;
+        $feed->link = static::filter(\URL::current().'?'.http_build_query(\Input::all()));
         $feed->lang = 'en';
 
         // get entries
         $entries = ex($results, 'feed.entry', array());
 
-        // check keys (a single entry jacks things up)
-        $keys = array_keys($entries);
-
-        // if this is single entry...
-        if (!is_numeric($keys[0]))
+        // if results...
+        if ($entries)
         {
-            // fix
-            $entries = array($entries);
-        }
+            // check keys (a single entry jacks things up)
+            $keys = array_keys($entries);
 
-        // search and replace
-        $find = array_keys(static::$filters);
-        $replace = array_values(static::$filters);
+            // if this is single entry...
+            if (!is_numeric($keys[0]))
+            {
+                // fix
+                $entries = array($entries);
+            }
 
-        // foreach result...
-        foreach ($entries as $entry)
-        {
-            // vars
-            $link = str_ireplace($find, $replace, ex($entry, 'link.attr.href'));
-            $date = ex($entry, 'updated.value');
+            // foreach result...
+            foreach ($entries as $entry)
+            {
+                // vars
+                $link = static::filter(ex($entry, 'link.attr.href'));
+                $date = ex($entry, 'updated.value');
 
-            // add to feed
-            $feed->add(null, null, $link, $date, null); // title, author, link, date, description
+                // add to feed
+                $feed->add(null, null, $link, $date, null); // title, author, link, date, description
+            }
         }
 
         // return
         return $feed->render('atom');
+    }
+
+    /**
+     * Return a filtered URL string.
+     *
+     * @param   string  $string
+     * @return  string
+     */
+    protected static function filter($string)
+    {
+        // get filters
+        $filters = static::$filters;
+
+        // amend
+        $filters['&'] = '&amp;';
+
+        // search and replace
+        $find = array_keys($filters);
+        $replace = array_values($filters);
+
+        // run
+        return str_ireplace($find, $replace, $string);
     }
 
 }
