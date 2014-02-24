@@ -1,7 +1,7 @@
 {
-    "name": "vendor/package",
-    "description": "",
-    "homepage": "",
+    "name": "travis/slack-twitter",
+    "description": "A Laravel PHP package for building a Slack integration for Twitter.",
+    "homepage": "https://github.com/swt83/php-laravel-slack-twitter",
     "license": "MIT",
     "authors": [
         {
@@ -12,19 +12,27 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": ""
+            "url": "https://github.com/RoumenDamianoff/laravel-feed.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/swt83/php-ex.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/swt83/php-xml.git"
         }
     ],
     "require": {
         "php": ">=5.3.0",
-        "illuminate/support": "4.1.*"
+        "illuminate/support": "4.1.*",
+        "roumen/feed": "*",
+        "travis/ex": "*",
+        "travis/xml": "*"
     },
     "autoload": {
-        "classmap": [
-            "src/commands"
-        ],
         "psr-0": {
-            "Vendor\\": "src/"
+            "Travis\\": "src/"
         }
     },
     "minimum-stability": "dev"

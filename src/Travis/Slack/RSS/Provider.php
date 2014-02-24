@@ -1,8 +1,10 @@
-<?php namespace Vendor\Package;
+<?php
+
+namespace Travis\Slack\RSS;
 
 use Illuminate\Support\ServiceProvider;
 
-class PackageServiceProvider extends ServiceProvider {
+class Provider extends ServiceProvider {
 
     /**
      * Indicates if loading of the provider is deferred.
@@ -18,9 +20,9 @@ class PackageServiceProvider extends ServiceProvider {
      */
     public function boot()
     {
-        $this->package('vendor/package');
+        $this->package('travis/slack_rss');
 
-        include __DIR__.'/../../routes.php';
+        include __DIR__.'/../../../routes.php';
     }
 
     /**
