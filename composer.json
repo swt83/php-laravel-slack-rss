@@ -21,6 +21,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/swt83/php-xml.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/swt83/php-shorty.git"
         }
     ],
     "require": {
@@ -28,7 +32,8 @@
         "illuminate/support": "4.1.*",
         "roumen/feed": "*",
         "travis/ex": "*",
-        "travis/xml": "*"
+        "travis/xml": "*",
+        "travis/shorty": "*"
     },
     "autoload": {
         "psr-0": {

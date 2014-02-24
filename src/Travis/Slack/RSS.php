@@ -2,6 +2,8 @@
 
 namespace Travis\Slack;
 
+use Travis\Shorty;
+
 class RSS {
 
     /**
@@ -104,7 +106,16 @@ class RSS {
         $replace = array_values($filters);
 
         // run
-        return str_ireplace($find, $replace, $string);
+        $string = str_ireplace($find, $replace, $string);
+
+        // detect google feed...
+        if (preg_match('/google.com/i', $string))
+        {
+            return Shorty::run($string);
+        }
+
+        // return
+        return $string;
     }
 
 }
