@@ -80,6 +80,13 @@ class RSS {
                 $link = static::filter(ex($entry, 'link.attr.href'));
                 $date = ex($entry, 'updated.value');
 
+                // detect google feed...
+                if (preg_match('/google.com/i', $link))
+                {
+                    // shortify
+                    $link = Shorty::run($link);
+                }
+
                 // add to feed
                 $feed->add(null, null, $link, $date, null); // title, author, link, date, description
             }
@@ -105,17 +112,8 @@ class RSS {
         $find = array_keys($filters);
         $replace = array_values($filters);
 
-        // run
-        $string = str_ireplace($find, $replace, $string);
-
-        // detect google feed...
-        if (preg_match('/google.com/i', $string))
-        {
-            return Shorty::run($string);
-        }
-
         // return
-        return $string;
+        return str_ireplace($find, $replace, $string);
     }
 
 }
