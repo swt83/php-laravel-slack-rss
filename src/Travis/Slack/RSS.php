@@ -5,15 +5,6 @@ namespace Travis\Slack;
 class RSS {
 
     /**
-     * Filters for incoming links (find => replace).
-     *
-     * @var     array
-     */
-    protected static $filters = array(
-        'https://www.google.com/url?q=' => ''
-    );
-
-    /**
      * Handle incoming mirror request.
      *
      * @return  string
@@ -104,10 +95,8 @@ class RSS {
      */
     protected static function filter($string)
     {
-        // get filters
-        $filters = static::$filters;
-
-        // amend
+        // make filter
+        $filters = array();
         $filters['&'] = '&amp;';
 
         // search and replace
