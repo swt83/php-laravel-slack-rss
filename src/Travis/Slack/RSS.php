@@ -28,15 +28,18 @@ class RSS {
             // convert
             $xml = \Travis\XML::from_url($url)->to_array();
 
+            // name
+            $name = \Input::get('name', $hash);
+
+            // build
+            $rss = \Travis\Slack\RSS::to_rss($name, $xml);
+
             // return
-            return $xml;
+            return $rss->getOriginalContent()->render();
         });
 
-        // name
-        $name = \Input::get('name', $hash);
-
         // return
-        return static::to_rss($name, $results);
+        return \Response::make($results)->header('Content-Type', 'application/rss+xml');
     }
 
     /**
