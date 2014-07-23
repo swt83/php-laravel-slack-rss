@@ -87,7 +87,14 @@ class RSS {
                 if (preg_match('/google.com/i', $link))
                 {
                     // shortify
-                    $link = Shorty::run($link);
+                    $short = Shorty::run($link);
+
+                    // if worked...
+                    if ($short)
+                    {
+                        // use short link
+                        $link = $short;
+                    }
                 }
 
                 // add to feed
