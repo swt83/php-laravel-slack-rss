@@ -2,8 +2,6 @@
 
 namespace Travis\Slack;
 
-use Travis\Shorty;
-
 class RSS {
 
     /**
@@ -86,15 +84,14 @@ class RSS {
                 // detect google feed...
                 if (preg_match('/google.com/i', $link))
                 {
-                    // shortify
-                    $short = Shorty::run($link);
+                    // decode url
+                    $link = html_entity_decode($link);
 
-                    // if worked...
-                    if ($short)
-                    {
-                        // use short link
-                        $link = $short;
-                    }
+                    // breakout
+                    parse_str($link, $parts);
+
+                    // get url, or not
+                    $link = ex($parts, 'url', $link);
                 }
 
                 // add to feed
