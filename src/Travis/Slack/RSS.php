@@ -94,6 +94,13 @@ class RSS {
                     $link = ex($parts, 'url', $link);
                 }
 
+                // urlencode query string on link
+                $request = parse_url($link);
+                parse_str(ex($request, 'query'), $arguments);
+                $link = ex($request, 'scheme', 'http').'://'
+                    .ex($request, 'host').'?'
+                    .http_build_query($arguments, '', '&amp;');
+
                 // add to feed
                 $feed->add(null, null, $link, $date, null); // title, author, link, date, description
             }
