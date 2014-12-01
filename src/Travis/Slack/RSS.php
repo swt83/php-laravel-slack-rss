@@ -55,7 +55,7 @@ class RSS {
         // set title
         $feed->title = 'rss ['.strtolower($name).']';
         $feed->description = $feed->title;
-        $feed->link = static::filter(\URL::current().'?'.http_build_query(\Input::all()));
+        $feed->link = \URL::current().'?'.http_build_query(\Input::all(), '', '&amp;');
         $feed->lang = 'en';
 
         // get entries
@@ -77,11 +77,13 @@ class RSS {
             // foreach result...
             foreach ($entries as $entry)
             {
-                // vars
-                $link = static::filter(ex($entry, 'link.attr.href'));
+                // capture
+                $title = ex($entry, 'title.value');
+                $link = ex($entry, 'link.attr.href');
                 $date = ex($entry, 'updated.value');
+                $description = ex($entry, 'content.value');
 
-                // detect google feed...
+                // if link is google proxy...
                 if (preg_match('/google.com/i', $link))
                 {
                     // decode url
@@ -94,12 +96,13 @@ class RSS {
                     $link = ex($parts, 'url', $link);
                 }
 
-                // urlencode query string on link
+                // fix "&" symbols
                 $request = parse_url($link);
-                parse_str(ex($request, 'query'), $arguments);
                 $link = ex($request, 'scheme', 'http').'://'
-                    .ex($request, 'host').'?'
-                    .http_build_query($arguments, '', '&amp;');
+                    .ex($request, 'host')
+                    .ex($request, 'path');
+                parse_str(ex($request, 'query'), $arguments); // get query as arguments
+                if ($arguments) $link .= '?'.http_build_query($arguments, '', '&amp;');
 
                 // add to feed
                 $feed->add(null, null, $link, $date, null); // title, author, link, date, description
@@ -108,26 +111,6 @@ class RSS {
 
         // return
         return $feed->render('atom');
-    }
-
-    /**
-     * Return a filtered URL string.
-     *
-     * @param   string  $string
-     * @return  string
-     */
-    protected static function filter($string)
-    {
-        // make filter
-        $filters = array();
-        $filters['&'] = '&amp;';
-
-        // search and replace
-        $find = array_keys($filters);
-        $replace = array_values($filters);
-
-        // return
-        return str_ireplace($find, $replace, $string);
     }
 
 }
